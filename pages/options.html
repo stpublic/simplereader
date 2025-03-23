@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SimpleReader - Settings</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      color: #333;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 32px;
+    }
+    
+    h1 {
+      font-size: 24px;
+      margin-bottom: 24px;
+      color: #1a73e8;
+    }
+    
+    .option-group {
+      margin-bottom: 24px;
+      border: 1px solid #dadce0;
+      border-radius: 8px;
+      padding: 16px;
+    }
+    
+    .option-group h2 {
+      font-size: 18px;
+      margin-top: 0;
+      margin-bottom: 16px;
+      color: #202124;
+    }
+    
+    .form-group {
+      margin-bottom: 16px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+    
+    input, select {
+      width: 100%;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #dadce0;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+    
+    input[type="password"] {
+      font-family: monospace;
+    }
+    
+    .api-key-container {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .api-key-container input {
+      flex-grow: 1;
+    }
+    
+    button {
+      background-color: #1a73e8;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    
+    button:hover {
+      background-color: #1765cc;
+    }
+    
+    .info-text {
+      font-size: 14px;
+      color: #5f6368;
+      margin-top: 8px;
+    }
+    
+    .status {
+      padding: 8px 16px;
+      border-radius: 4px;
+      margin-top: 16px;
+      display: none;
+    }
+    
+    .status.success {
+      background-color: #e6f4ea;
+      color: #0f9d58;
+    }
+    
+    .status.error {
+      background-color: #fce8e6;
+      color: #d93025;
+    }
+    
+    .api-disclaimer {
+      font-size: 14px;
+      margin-top: 24px;
+      padding: 16px;
+      background-color: #f8f9fa;
+      border-radius: 4px;
+      line-height: 1.5;
+    }
+    
+    footer {
+      margin-top: 32px;
+      text-align: center;
+      font-size: 14px;
+      color: #5f6368;
+    }
+    
+    .model-card {
+      border: 1px solid #dadce0;
+      border-radius: 4px;
+      padding: 16px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+    }
+    
+    .model-card.selected {
+      border-color: #1a73e8;
+      background-color: #e8f0fe;
+    }
+    
+    .model-card h3 {
+      margin-top: 0;
+      margin-bottom: 8px;
+    }
+    
+    .model-card p {
+      margin: 0;
+      font-size: 14px;
+      color: #5f6368;
+    }
+    
+    .model-card .tag {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    
+    .model-card .tag.latest {
+      background-color: #e6f4ea;
+      color: #0f9d58;
+    }
+    
+    .model-card input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>SimpleReader Settings</h1>
+  
+  <div class="option-group">
+    <h2>API Configuration</h2>
+    <div class="form-group">
+      <label for="api-key">OpenAI API Key</label>
+      <div class="api-key-container">
+        <input type="password" id="api-key" placeholder="sk-..." />
+        <button id="toggle-api-key" title="Show/Hide API Key">👁️</button>
+        <button id="verify-api-key">Verify</button>
+      </div>
+      <p class="info-text">
+        Your API key is stored locally in your browser. You can get a key from 
+        <a href="https://platform.openai.com/api-keys" target="_blank">OpenAI's platform</a>.
+      </p>
+      <p id="key-verification-result"></p>
+    </div>
+  </div>
+  
+  <div class="option-group">
+    <h2>TTS Settings</h2>
+    
+    <div class="form-group">
+      <label>Text-to-Speech Model</label>
+      
+      <div class="model-card" id="model-card-gpt4o">
+        <input type="radio" name="model" id="model-gpt4o" value="gpt-4o-mini-tts">
+        <h3>GPT-4o Mini TTS</h3>
+        <p>Latest model with high quality audio and natural speech</p>
+        <p class="info-text">Supports tone instructions for more expressive speech</p>
+        <div class="tag latest">Latest</div>
+      </div>
+      
+      <div class="model-card" id="model-card-tts1106">
+        <input type="radio" name="model" id="model-tts1106" value="tts-1-1106">
+        <h3>TTS 1106</h3>
+        <p>Improved naturalness with tone and speed adjustment</p>
+        <div class="tag latest">Latest</div>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="default-voice">Voice</label>
+      <select id="default-voice">
+        <option value="coral">Coral (Expressive)</option>
+        <option value="alloy">Alloy (Neutral)</option>
+        <option value="echo">Echo (Male)</option>
+        <option value="fable">Fable (British)</option>
+        <option value="onyx">Onyx (Male)</option>
+        <option value="nova">Nova (Female)</option>
+        <option value="shimmer">Shimmer (Female)</option>
+      </select>
+      <p class="info-text">
+        The voice that will be used for reading aloud.
+      </p>
+    </div>
+    
+    <div id="tone-container" class="form-group">
+      <label for="default-tone">Speech Tone</label>
+      <select id="default-tone">
+        <option value="natural">Natural - Conversational</option>
+        <option value="cheerful">Cheerful - Positive</option>
+        <option value="formal">Formal - Professional</option>
+        <option value="serious">Serious - Direct</option>
+        <option value="excited">Excited - Enthusiastic</option>
+      </select>
+      <p class="info-text">
+        Speech tone instructions for more expressive reading
+      </p>
+    </div>
+    
+    <div id="speed-container" class="form-group">
+      <label for="default-speed">Reading Speed</label>
+      <input type="number" id="default-speed" value="1.0" min="0.25" max="4.0" step="0.05" />
+      <p class="info-text">
+        Speed multiplier for reading. 1.0 is normal speed, 0.5 is half speed, 2.0 is double speed.
+        (Only available with TTS 1106 model)
+      </p>
+    </div>
+  </div>
+  
+  <button id="save-button">Save Settings</button>
+  <a href="#" id="reset-settings" style="margin-left: 16px; font-size: 14px;">Reset to defaults</a>
+  
+  <div id="status-message" class="status"></div>
+  
+  <div class="api-disclaimer">
+    <strong>Important:</strong> This extension uses the OpenAI TTS API, which has 
+    associated costs. The extension will convert web page text into speech, which 
+    counts toward your API usage. You are responsible for any charges incurred.
+    <br><br>
+    To control costs, the extension limits the amount of text converted in a single request.
+  </div>
+  
+  <footer>
+    SimpleReader for OpenAI TTS | <a href="https://github.com/example/simplereader" target="_blank">GitHub</a>
+  </footer>
+  
+  <script src="options.js"></script>
+</body>
+</html> 
