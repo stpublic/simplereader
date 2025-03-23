@@ -17,7 +17,7 @@ A lightweight Chrome extension that reads web page content aloud using OpenAI's 
 
 1. Clone this repository:
    ```
-   git clone https://github.com/yourusername/simplereader.git
+   git clone https://github.com/stpublic/simplereader.git
    ```
 
 2. Open Chrome and navigate to `chrome://extensions/`
